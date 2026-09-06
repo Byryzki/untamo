@@ -1,0 +1,8 @@
+/build/
+/libs/
+/.vscode/*
+CMakeFiles/
+/_deps/
+/generated/pico_base/pico/
+/pico-sdk/
+compile_commands.json
