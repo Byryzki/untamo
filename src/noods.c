@@ -5,6 +5,9 @@
 #include "hardware/irq.h"
 #include "hardware/pwm.h"
 
+static int fade = 0;
+static bool going_up = true;
+
 void init_nood()
 {
     gpio_init(NOODS_PIN);
@@ -27,9 +30,8 @@ void blink_nood(int times)
     }
 }
 
-void on_pwm_wrap() {
-    static int fade = 0;
-    static bool going_up = true;
+void on_pwm_wrap()
+{
     // Clear the interrupt flag that brought us here
     pwm_clear_irq(pwm_gpio_to_slice_num(NOODS_PIN));
 
@@ -55,6 +57,9 @@ void on_pwm_wrap() {
 /*make the PWM kind*/
 void wakeup_nood()
 {
+    fade = 0;
+    going_up = true;
+    
     // Tell the LED pin that the PWM is in charge of its value.
     gpio_set_function(NOODS_PIN, GPIO_FUNC_PWM);
     // Figure out which slice we just connected to the LED pin
@@ -79,6 +84,7 @@ void wakeup_nood()
 void stop_wakeup()
 {
     // TODO: Figure out how to get PWM back after the first cycle
+
     uint slice_num = pwm_gpio_to_slice_num(NOODS_PIN);
 
     pwm_set_irq_enabled(slice_num, false);
