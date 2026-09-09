@@ -40,9 +40,7 @@ void gpio_callback(uint gpio, uint32_t events)
 /*Wakeful sleep breaking out of state when new detected.*/
 int dog_sleep(int secs)
 {
-    bool state_change = false;
     volatile State prev_state = run.state;
-
     for(int i=0; i<secs*10; i++)
     {
         sleep_ms(100);
@@ -89,7 +87,7 @@ int main() {
         switch(run.state)
         {
             case IDLE:
-                sleep_ms(1000);
+                dog_sleep(60);
                 break;
 
             case SET:
@@ -122,6 +120,7 @@ int main() {
                 //sleep_ms(5000);
                 stop_nood();
 
+                run.wakeup_on = false;
                 run.state = IDLE;
                 break;
         }
