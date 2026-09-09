@@ -30,8 +30,6 @@ void gpio_callback(uint gpio, uint32_t events)
 {
     if(run.wakeup_on)
     {
-        stop_nood();
-        run.wakeup_on = false;
         run.state = IDLE;
     } else {
         run.state = SET;
@@ -113,7 +111,12 @@ int main() {
                 run.wakeup_on = true;
 
                 set_nood(0);
-                if(dog_sleep(30)){break;}
+                if(dog_sleep(30))
+                {
+                    stop_nood();
+                    run.wakeup_on = false;
+                    break;
+                }
                 //stop_nood();
                 // Blinks in the end to make sure person woke
                 //set_nood(1);
