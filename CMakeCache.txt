@@ -123,9 +123,6 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//Value Computed by CMake.
-CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/home/bryy/Projects/untamo/CMakeFiles/pkgRedirects
-
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
@@ -227,9 +224,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 //Path to a program.
 CMAKE_STRIP:FILEPATH=/usr/bin/arm-none-eabi-strip
 
-//Path to a program.
-CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
-
 //The CMake toolchain file
 CMAKE_TOOLCHAIN_FILE:FILEPATH=/home/bryy/.pico-sdk/sdk/2.3.0/cmake/preload/toolchains/pico_arm_cortex_m33_gcc.cmake
 
@@ -242,7 +236,7 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //Dot tool for use with Doxygen
 DOXYGEN_DOT_EXECUTABLE:FILEPATH=/usr/bin/dot
 
-//Doxygen documentation generation tool (https://www.doxygen.nl)
+//Doxygen documentation generation tool (http://www.doxygen.org)
 DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
 
 //Value Computed by CMake
@@ -430,8 +424,6 @@ CMAKE_C_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_C_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_DLLTOOL
 CMAKE_DLLTOOL-ADVANCED:INTERNAL=1
-//Path to cache edit program executable.
-CMAKE_EDIT_COMMAND:INTERNAL=/home/bryy/.pico-sdk/cmake/v3.31.5/bin/ccmake
 //Executable file format
 CMAKE_EXECUTABLE_FORMAT:INTERNAL=ELF
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS
@@ -513,8 +505,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_STRIP
 CMAKE_STRIP-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: CMAKE_TAPI
-CMAKE_TAPI-ADVANCED:INTERNAL=1
 //uname command
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
@@ -556,15 +546,9 @@ PICO_SDK_TESTS_ENABLED:INTERNAL=
 PICO_THREAD_LOCAL_TYPE:INTERNAL=arm-aeabi
 PICO_TOOLCHAIN_PATH:INTERNAL=/home/bryy/.pico-sdk/toolchain/RISCV_ZCB_RPI_2_2_0_3
 PICO_TOOLS_DIR:INTERNAL=/home/bryy/.pico-sdk/sdk/2.3.0/tools
-//Compiler reason failure
-_Python3_Compiler_REASON_FAILURE:INTERNAL=
-//Development reason failure
-_Python3_Development_REASON_FAILURE:INTERNAL=
 //Path to a program.
 _Python3_EXECUTABLE:INTERNAL=/usr/bin/python3.10
 //Python3 Properties
-_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;10;12;32;64;;;abi3;/usr/lib/python3.10;/usr/lib/python3.10;/usr/local/lib/python3.10/dist-packages;/usr/local/lib/python3.10/dist-packages
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;10;12;32;;;/usr/lib/python3.10;/usr/lib/python3.10;/usr/lib/python3/dist-packages;/usr/lib/python3/dist-packages
 _Python3_INTERPRETER_SIGNATURE:INTERNAL=61380851b1f49cd20124cec6c9ca8095
-//NumPy reason failure
-_Python3_NumPy_REASON_FAILURE:INTERNAL=
 

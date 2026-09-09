@@ -44,9 +44,7 @@ int init_display(void)
     
     printf("OELD_init\r\n");
     if(DEV_Module_Init()!=0){
-        while(1){
-            printf("END\r\n");
-        }
+        return 1;
     }
     
     /* Init */

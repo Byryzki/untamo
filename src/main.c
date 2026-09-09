@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "noods.h"
-#include "dfrobot_max30102.h"
+#include "basic_reading.h"
 #include "hardware/i2c.h"
 #include "oled.h"
-
-#define I2C_PORT i2c0
-#define I2C_SDA_PIN 4
-#define I2C_SCL_PIN 5
 
 typedef enum
 {
@@ -21,7 +17,7 @@ typedef struct
 {
     volatile State state;
     volatile time sleeptime;
-    volatile bool diplay_on;
+    volatile bool wakeup_on;
 } Status;
 
 static Status run =
@@ -32,8 +28,27 @@ static Status run =
 
 void gpio_callback(uint gpio, uint32_t events)
 {
-    run.diplay_on = true;
-    run.state = SET;
+    if(run.wakeup_on)
+    {
+        stop_nood();
+        run.wakeup_on = false;
+        run.state = IDLE;
+    } else {
+        run.state = SET;
+    }
+}
+/*Wakeful sleep breaking out of state when new detected.*/
+int dog_sleep(int secs)
+{
+    bool state_change = false;
+    volatile State prev_state = run.state;
+
+    for(int i=0; i<secs*10; i++)
+    {
+        sleep_ms(100);
+        if(run.state != prev_state){return 1;}
+    }
+    return 0;
 }
 
 void status_log()
@@ -42,11 +57,25 @@ void status_log()
     printf("Wakeup time is: %d\n", run.sleeptime.hour);
 }
 
+void present_error(int subject)
+/*0: stdio, 1: display, 2: nood, 3: pulse*/
+{
+    char* subs[4] = {"stdio", "display", "nood", "pulse"};
+    while(true)
+    {
+        printf("Problems with initializing %s\n", subs[subject]);
+        sleep_ms(2000);
+    }
+}
+
 int main() {
     // Initialize standard I/O for serial printing
-    stdio_init_all(); 
-    init_display();
-    init_nood();
+    stdio_init_all();
+    sleep_ms(5000); //Time to get serial going
+
+    if(init_display()){present_error(1);} 
+    if(init_nood()){present_error(2);} 
+    //if(init_pulse()){present_error(3);} // TODO: Find why init hangs
 
     int sleep_mins = 0;
 
@@ -60,8 +89,7 @@ int main() {
         switch(run.state)
         {
             case IDLE:
-                //status_log();
-                sleep_ms(100);
+                sleep_ms(1000);
                 break;
 
             case SET:
@@ -69,7 +97,6 @@ int main() {
                 run.sleeptime = set_time();
                 gpio_acknowledge_irq(key0, GPIO_IRQ_EDGE_FALL);
                 gpio_acknowledge_irq(key1, GPIO_IRQ_EDGE_FALL);
-                run.diplay_on = false;
                 run.state = MEASURE;
                 status_log();
                 break;
@@ -85,13 +112,19 @@ int main() {
 
             case WAKE:
                 status_log();
-                wakeup_nood();
-                sleep_ms(15000);
-                put_nood(false);
+                run.wakeup_on = true;
+
+                set_nood(0);
+                if(dog_sleep(30)){break;}
+                //stop_nood();
+                // Blinks in the end to make sure person woke
+                //set_nood(1);
+                //sleep_ms(5000);
+                stop_nood();
+
                 run.state = IDLE;
                 break;
         }
-        sleep_ms(1000);
     }
 
     return 0;

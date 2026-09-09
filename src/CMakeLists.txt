@@ -4,6 +4,7 @@ add_executable(untamo
     main.c
     noods.c
     oled.c
+    basic_reading.c
     )
 
 pico_set_program_name(untamo "untamo")

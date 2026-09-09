@@ -5,10 +5,10 @@
 
 #define NOODS_PIN 14
 
-void init_nood();
+int init_nood();
 void put_nood(bool on);
 void blink_nood(int times);
-void wakeup_nood();
-void stop_wakeup();
+void set_nood(uint8_t action);
+void stop_nood();
 
 #endif
