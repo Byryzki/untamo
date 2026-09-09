@@ -7,7 +7,6 @@
 
 static int fade = 0;
 static bool going_up = true;
-static int blink_iter = 0;
 
 int init_nood()
 {
@@ -68,21 +67,20 @@ void on_wakeup()
 }
 
 void set_nood(uint8_t action)   // 0: Fade on, 1: Smooth blink
-{
-    fade = 0;
-    going_up = true;
-    
-    gpio_set_function(NOODS_PIN, GPIO_FUNC_PWM);
+{    
     uint slice_num = pwm_gpio_to_slice_num(NOODS_PIN);
 
-    pwm_clear_irq(slice_num);
-    pwm_set_irq_enabled(slice_num, true);
+    irq_set_enabled(PWM_DEFAULT_IRQ_NUM(), false);
+    pwm_set_irq_enabled(slice_num, false);
+
+    fade = 0;
+    going_up = true; 
 
     pwm_config config = pwm_get_default_config();
 
     switch(action)
     {
-        case 0:
+        case 0:   
             irq_set_exclusive_handler(PWM_DEFAULT_IRQ_NUM(), on_wakeup);
             pwm_config_set_clkdiv(&config, 50.f);
             break;
@@ -93,15 +91,27 @@ void set_nood(uint8_t action)   // 0: Fade on, 1: Smooth blink
             break;
     }
     
+    // 4. Restore GPIO function and apply PWM hardware config
+    gpio_set_function(NOODS_PIN, GPIO_FUNC_PWM);
+    pwm_init(slice_num, &config, false); // Initialize without enabling yet
+    
+    // Set initial duty cycle explicitly (e.g., 0)
+    pwm_set_gpio_level(NOODS_PIN, 0);
+
+    // 5. Clear stale hardware interrupt flags before opening the gate
+    pwm_clear_irq(slice_num);
+
+    // 6. Enable hardware IRQ and NVIC interrupt line LAST
+    pwm_set_irq_enabled(slice_num, true);
     irq_set_enabled(PWM_DEFAULT_IRQ_NUM(), true);
 
-    pwm_init(slice_num, &config, true);
+    // 7. Start PWM clock
+    pwm_set_enabled(slice_num, true);
 }
 
 void stop_nood()
 {
     // TODO: Figure out how to get PWM back after the first cycle
-    blink_iter = 0;
     uint slice_num = pwm_gpio_to_slice_num(NOODS_PIN);
 
     pwm_set_irq_enabled(slice_num, false);

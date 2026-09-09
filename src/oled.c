@@ -86,19 +86,19 @@ time set_time(void)
     int i = 0;
     for(i; i<2000; i++){
         if(DEV_Digital_Read(key1 ) == 0){
-            Paint_DrawRectangle(115, 5, 125, 15, WHITE, DOT_PIXEL_2X2,DRAW_FILL_FULL);
+            Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
             iter = iter+1;
             i = 0;
-        }else {
-            Paint_DrawRectangle(115, 5, 125, 15, WHITE, DOT_PIXEL_2X2,DRAW_FILL_EMPTY);
+        }else {;
+            Paint_DrawChar(110, 0, '+', &Font24, BLACK, WHITE);
         }
             
         if(DEV_Digital_Read(key0 ) == 0){
-            Paint_DrawRectangle(115, 50, 125, 60, WHITE, DOT_PIXEL_2X2,DRAW_FILL_FULL);
+            Paint_DrawChar(115, 50, '-', &Font12, BLACK, WHITE);
             iter = iter-1;
             i = 0;
         }else {
-            Paint_DrawRectangle(115, 50, 125, 60, WHITE, DOT_PIXEL_2X2,DRAW_FILL_EMPTY);
+            Paint_DrawChar(110, 45, '-', &Font24, BLACK, WHITE);
         }
 
         sleeptime.hour = iter/40; // Adjust selection speed
@@ -120,19 +120,19 @@ time set_time(void)
     i = 0;
     for(i; i<2000; i++){
         if(DEV_Digital_Read(key1 ) == 0){
-            Paint_DrawRectangle(115, 5, 125, 15, WHITE, DOT_PIXEL_2X2,DRAW_FILL_FULL);
+            Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
             iter = iter+1;
             i = 0;
         }else {
-            Paint_DrawRectangle(115, 5, 125, 15, WHITE, DOT_PIXEL_2X2,DRAW_FILL_EMPTY);
+            Paint_DrawChar(110, 0, '+', &Font24, BLACK, WHITE);
         }
             
         if(DEV_Digital_Read(key0 ) == 0){
-            Paint_DrawRectangle(115, 50, 125, 60, WHITE, DOT_PIXEL_2X2,DRAW_FILL_FULL);
+            Paint_DrawChar(115, 50, '-', &Font12, BLACK, WHITE);
             iter = iter-1;
             i = 0;
         }else {
-            Paint_DrawRectangle(115, 50, 125, 60, WHITE, DOT_PIXEL_2X2,DRAW_FILL_EMPTY);
+            Paint_DrawChar(110, 45, '-', &Font24, BLACK, WHITE);
         }
 
         sleeptime.minutes = iter/40; // Adjust selection speed

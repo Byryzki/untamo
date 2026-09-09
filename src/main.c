@@ -24,6 +24,7 @@ static Status run =
 {
     .state = IDLE,  // Init state here
     .sleeptime = 0,
+    .wakeup_on = false
 };
 
 void gpio_callback(uint gpio, uint32_t events)
@@ -67,13 +68,13 @@ void present_error(int subject)
 int main() {
     // Initialize standard I/O for serial printing
     stdio_init_all();
-    sleep_ms(5000); //Time to get serial going
 
     if(init_display()){present_error(1);} 
     if(init_nood()){present_error(2);} 
     //if(init_pulse()){present_error(3);} // TODO: Find why init hangs
+    // TODO: Solder pulse sensor's VCC to 3V3 (out)
 
-    int sleep_mins = 0;
+    int sleep_secs = 0;
 
     // Wake display from either button
     gpio_set_irq_enabled_with_callback(key0, GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
@@ -90,7 +91,9 @@ int main() {
 
             case SET:
                 status_log();
+                // TODO: Change squares to + and - 
                 run.sleeptime = set_time();
+                // TODO: Put another set_time and calc sleep time from the difference
                 gpio_acknowledge_irq(key0, GPIO_IRQ_EDGE_FALL);
                 gpio_acknowledge_irq(key1, GPIO_IRQ_EDGE_FALL);
                 run.state = MEASURE;
@@ -99,9 +102,13 @@ int main() {
 
             case MEASURE:
                 status_log();
-                sleep_mins = (((run.sleeptime.hour*60) + run.sleeptime.minutes*10) *1000);
-                printf("Sleep duration shall be: %d\n", sleep_mins);
-                sleep_ms(sleep_mins);
+                sleep_secs = (((run.sleeptime.hour*60) + run.sleeptime.minutes)*60);
+                printf("Sleep duration shall be: %d\n", sleep_secs);
+                if(dog_sleep(sleep_secs))
+                {
+                    run.state = IDLE;
+                    break;
+                }
 
                 run.state = WAKE;
                 break;
@@ -110,17 +117,29 @@ int main() {
                 status_log();
                 run.wakeup_on = true;
 
-                set_nood(0);
+                set_nood(0); // Slowly increase light
                 if(dog_sleep(30))
                 {
                     stop_nood();
                     run.wakeup_on = false;
                     break;
                 }
-                //stop_nood();
-                // Blinks in the end to make sure person woke
-                //set_nood(1);
-                //sleep_ms(5000);
+                /*
+                stop_nood();  // Wait for clearance
+                if(dog_sleep(5))
+                {
+                    stop_nood();
+                    run.wakeup_on = false;
+                    break;
+                }
+                set_nood(1); // Blinks in the end to make sure person woke
+                if(dog_sleep(10))
+                {
+                    stop_nood();
+                    run.wakeup_on = false;
+                    break;
+                }
+                */
                 stop_nood();
 
                 run.wakeup_on = false;
