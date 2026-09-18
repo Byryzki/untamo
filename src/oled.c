@@ -165,7 +165,7 @@ int set_time(void)
     if(sleeptime.durhour < 0){sleeptime.durhour = 0;}
     sleeptime.durminutes = sleeptime.wakeminutes - sleeptime.sleepminutes;
     if(sleeptime.durminutes < 0){sleeptime.durminutes = 0;}
-    sleeptime.total = 60 * *hour + *minute;
+    sleeptime.total = 60*sleeptime.durhour + sleeptime.durminutes;
 
     // Show time to sleep
     Paint_DrawString_EN(60, 20, formatted(sleeptime.durminutes), &Font24, WHITE, BLACK);
