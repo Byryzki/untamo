@@ -35,4 +35,3 @@ pico_sdk_init()
 
 add_subdirectory(src)
 add_subdirectory(libs/oled)
-add_subdirectory(libs/pulse)

@@ -285,19 +285,6 @@ Fonts/fast:
 	$(MAKE) $(MAKESILENT) -f libs/oled/Fonts/CMakeFiles/Fonts.dir/build.make libs/oled/Fonts/CMakeFiles/Fonts.dir/build
 .PHONY : Fonts/fast
 
-#=============================================================================
-# Target rules for targets named pulse_lib
-
-# Build rule for target.
-pulse_lib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pulse_lib
-.PHONY : pulse_lib
-
-# fast build rule for target.
-pulse_lib/fast:
-	$(MAKE) $(MAKESILENT) -f libs/pulse/CMakeFiles/pulse_lib.dir/build.make libs/pulse/CMakeFiles/pulse_lib.dir/build
-.PHONY : pulse_lib/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -318,7 +305,6 @@ help:
 	@echo "... OLED"
 	@echo "... bs2_default"
 	@echo "... bs2_default_library"
-	@echo "... pulse_lib"
 	@echo "... untamo"
 .PHONY : help
 

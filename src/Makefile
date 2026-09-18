@@ -130,54 +130,6 @@ untamo/fast:
 	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/build
 .PHONY : untamo/fast
 
-__/libs/pulse/dfrobot_max30102.o: __/libs/pulse/dfrobot_max30102.c.o
-.PHONY : __/libs/pulse/dfrobot_max30102.o
-
-# target to build an object file
-__/libs/pulse/dfrobot_max30102.c.o:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/__/libs/pulse/dfrobot_max30102.c.o
-.PHONY : __/libs/pulse/dfrobot_max30102.c.o
-
-__/libs/pulse/dfrobot_max30102.i: __/libs/pulse/dfrobot_max30102.c.i
-.PHONY : __/libs/pulse/dfrobot_max30102.i
-
-# target to preprocess a source file
-__/libs/pulse/dfrobot_max30102.c.i:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/__/libs/pulse/dfrobot_max30102.c.i
-.PHONY : __/libs/pulse/dfrobot_max30102.c.i
-
-__/libs/pulse/dfrobot_max30102.s: __/libs/pulse/dfrobot_max30102.c.s
-.PHONY : __/libs/pulse/dfrobot_max30102.s
-
-# target to generate assembly for a file
-__/libs/pulse/dfrobot_max30102.c.s:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/__/libs/pulse/dfrobot_max30102.c.s
-.PHONY : __/libs/pulse/dfrobot_max30102.c.s
-
-basic_reading.o: basic_reading.c.o
-.PHONY : basic_reading.o
-
-# target to build an object file
-basic_reading.c.o:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/basic_reading.c.o
-.PHONY : basic_reading.c.o
-
-basic_reading.i: basic_reading.c.i
-.PHONY : basic_reading.i
-
-# target to preprocess a source file
-basic_reading.c.i:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/basic_reading.c.i
-.PHONY : basic_reading.c.i
-
-basic_reading.s: basic_reading.c.s
-.PHONY : basic_reading.s
-
-# target to generate assembly for a file
-basic_reading.c.s:
-	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/basic_reading.c.s
-.PHONY : basic_reading.c.s
-
 home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.o: home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.c.o
 .PHONY : home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.o
 
@@ -2162,6 +2114,30 @@ oled.c.s:
 	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/oled.c.s
 .PHONY : oled.c.s
 
+pulse.o: pulse.c.o
+.PHONY : pulse.o
+
+# target to build an object file
+pulse.c.o:
+	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/pulse.c.o
+.PHONY : pulse.c.o
+
+pulse.i: pulse.c.i
+.PHONY : pulse.i
+
+# target to preprocess a source file
+pulse.c.i:
+	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/pulse.c.i
+.PHONY : pulse.c.i
+
+pulse.s: pulse.c.s
+.PHONY : pulse.s
+
+# target to generate assembly for a file
+pulse.c.s:
+	cd /home/bryy/Projects/untamo && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/untamo.dir/build.make src/CMakeFiles/untamo.dir/pulse.c.s
+.PHONY : pulse.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -2171,12 +2147,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... untamo"
-	@echo "... __/libs/pulse/dfrobot_max30102.o"
-	@echo "... __/libs/pulse/dfrobot_max30102.i"
-	@echo "... __/libs/pulse/dfrobot_max30102.s"
-	@echo "... basic_reading.o"
-	@echo "... basic_reading.i"
-	@echo "... basic_reading.s"
 	@echo "... home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.o"
 	@echo "... home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.i"
 	@echo "... home/bryy/.pico-sdk/sdk/2.3.0/lib/tinyusb/src/class/audio/audio_device.s"
@@ -2425,6 +2395,9 @@ help:
 	@echo "... oled.o"
 	@echo "... oled.i"
 	@echo "... oled.s"
+	@echo "... pulse.o"
+	@echo "... pulse.i"
+	@echo "... pulse.s"
 .PHONY : help
 
 

@@ -4,7 +4,7 @@ add_executable(untamo
     main.c
     noods.c
     oled.c
-    basic_reading.c
+    pulse.c
     )
 
 pico_set_program_name(untamo "untamo")
@@ -18,14 +18,12 @@ pico_enable_stdio_usb(untamo 1)
 target_link_libraries(untamo
         pico_stdlib
         OLED_libs
-        pulse_lib
         )
 
 # Add the standard include files to the build
 target_include_directories(untamo PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         ${PROJECT_SOURCE_DIR}/libs/oled
-        ${PROJECT_SOURCE_DIR}/libs/pulse
 )
 
 target_link_libraries(untamo 

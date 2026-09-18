@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "noods.h"
-#include "basic_reading.h"
-#include "hardware/i2c.h"
+#include "pulse.h"
 #include "oled.h"
 
 typedef enum
@@ -16,14 +15,14 @@ typedef enum
 typedef struct
 {
     volatile State state;
-    volatile time sleeptime;
+    volatile int sleep_mins;
     volatile bool wakeup_on;
 } Status;
 
 static Status run =
 {
     .state = IDLE,  // Init state here
-    .sleeptime = 0,
+    .sleep_mins = 0,
     .wakeup_on = false
 };
 
@@ -51,7 +50,6 @@ int dog_sleep(int secs)
 void status_log()
 {
     printf("State is: %d\n", run.state);
-    printf("Wakeup time is: %d\n", run.sleeptime.hour);
 }
 
 void present_error(int subject)
@@ -86,14 +84,13 @@ int main() {
         switch(run.state)
         {
             case IDLE:
-                dog_sleep(60);
+                dog_sleep(5);
+                //get_pulse();
                 break;
 
             case SET:
                 status_log();
-                // TODO: Change squares to + and - 
-                run.sleeptime = set_time();
-                // TODO: Put another set_time and calc sleep time from the difference
+                run.sleep_mins = set_time();
                 gpio_acknowledge_irq(key0, GPIO_IRQ_EDGE_FALL);
                 gpio_acknowledge_irq(key1, GPIO_IRQ_EDGE_FALL);
                 run.state = MEASURE;
@@ -102,9 +99,8 @@ int main() {
 
             case MEASURE:
                 status_log();
-                sleep_secs = (((run.sleeptime.hour*60) + run.sleeptime.minutes)*60);
-                printf("Sleep duration shall be: %d\n", sleep_secs);
-                if(dog_sleep(sleep_secs))
+                printf("Sleep duration shall be: %d minutes.\n", run.sleep_mins);
+                if(dog_sleep(60*run.sleep_mins))
                 {
                     run.state = IDLE;
                     break;

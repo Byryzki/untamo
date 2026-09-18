@@ -9,12 +9,17 @@
 
 typedef struct
 {
-    volatile int hour;
-    volatile int minutes;
+    volatile int sleephour;
+    volatile int sleepminutes;
+    volatile int wakehour;
+    volatile int wakeminutes;
+    int durhour;
+    int durminutes;
+    int total;
 } time;
 
 int init_display(void);
-time set_time(void);
+int set_time(void);
 
 static const unsigned char gImage_1inch3_C_1[1024] = { /* 0X00,0X01,0X80,0X00,0X40,0X00, */
 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,

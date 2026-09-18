@@ -42,7 +42,6 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/bryy/Projects/untamo/pico-sdk/cmake_install.cmake")
   include("/home/bryy/Projects/untamo/src/cmake_install.cmake")
   include("/home/bryy/Projects/untamo/libs/oled/cmake_install.cmake")
-  include("/home/bryy/Projects/untamo/libs/pulse/cmake_install.cmake")
 
 endif()
 
