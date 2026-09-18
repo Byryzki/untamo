@@ -87,7 +87,7 @@ int set_time(void)
             if(DEV_Digital_Read(key1 ) == 0){
                 Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
                 iter = iter+1;
-                i = 0;
+                i = 800;
             }else {;
                 Paint_DrawChar(110, 0, '+', &Font24, BLACK, WHITE);
             }
@@ -95,7 +95,7 @@ int set_time(void)
             if(DEV_Digital_Read(key0 ) == 0){
                 Paint_DrawChar(115, 50, '-', &Font12, BLACK, WHITE);
                 iter = iter-1;
-                i = 0;
+                i = 800;
             }else {
                 Paint_DrawChar(110, 45, '-', &Font24, BLACK, WHITE);
             }
@@ -110,7 +110,7 @@ int set_time(void)
                 Paint_DrawString_EN(15, 20, formatted(*hour), &Font24, WHITE, BLACK);
             }
             Paint_DrawChar(45, 20, del_char, &Font24, BLACK, WHITE);
-            Paint_DrawString_EN(60, 20, format_m[0], &Font24, WHITE, BLACK);
+            Paint_DrawString_EN(60, 20, formatted(0), &Font24, WHITE, BLACK);
             Paint_DrawString_EN(15, 5, info, &Font12, WHITE, BLACK);
 
             OLED_1in3_C_Display(BlackImage);
@@ -122,7 +122,7 @@ int set_time(void)
             if(DEV_Digital_Read(key1 ) == 0){
                 Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
                 iter = iter+1;
-                i = 0;
+                i = 800;
             }else {
                 Paint_DrawChar(110, 0, '+', &Font24, BLACK, WHITE);
             }
@@ -130,7 +130,7 @@ int set_time(void)
             if(DEV_Digital_Read(key0 ) == 0){
                 Paint_DrawChar(115, 50, '-', &Font12, BLACK, WHITE);
                 iter = iter-1;
-                i = 0;
+                i = 800;
             }else {
                 Paint_DrawChar(110, 45, '-', &Font24, BLACK, WHITE);
             }
@@ -160,12 +160,12 @@ int set_time(void)
         Paint_Clear(BLACK);
         sleep_ms(1000);
     }
-    sleeptime.durhour = sleeptime.wakehour - sleeptime.wakehour;
-    if(sleeptime.durhour < 0){sleeptime.durhour = 0;}
-    sleeptime.durminutes = sleeptime.wakeminutes - sleeptime.wakeminutes;
-    if(sleeptime.durminutes < 0){sleeptime.durminutes = 0;}
 
-    sleeptime.total = 60*sleeptime.durhour + sleeptime.durminutes;
+    sleeptime.durhour = sleeptime.wakehour - sleeptime.sleephour;
+    if(sleeptime.durhour < 0){sleeptime.durhour = 0;}
+    sleeptime.durminutes = sleeptime.wakeminutes - sleeptime.sleepminutes;
+    if(sleeptime.durminutes < 0){sleeptime.durminutes = 0;}
+    sleeptime.total = 60 * *hour + *minute;
 
     // Show time to sleep
     Paint_DrawString_EN(60, 20, formatted(sleeptime.durminutes), &Font24, WHITE, BLACK);
@@ -175,6 +175,8 @@ int set_time(void)
     OLED_1in3_C_Display(BlackImage);
     Paint_Clear(BLACK);
     sleep_ms(2000);
+
+    //TODO: Cleanup function to free all mallocs
 
     // Back to black
     OLED_1in3_C_Clear();
