@@ -82,7 +82,7 @@ void set_nood(uint8_t action)   // 0: Fade on, 1: Smooth blink
     {
         case 0:   
             irq_set_exclusive_handler(PWM_DEFAULT_IRQ_NUM(), on_wakeup);
-            pwm_config_set_clkdiv(&config, 50.f);
+            pwm_config_set_clkdiv(&config, 50.f);   // 50 is practical max (flickering)
             break;
 
         case 1:
