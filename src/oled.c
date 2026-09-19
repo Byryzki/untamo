@@ -36,19 +36,6 @@ int init_display(void)
     return 0;
 }
 
-char *formatted(int res)
-{
-    char *form = (char *)malloc(12 * sizeof(char));
-    if(form == NULL){return NULL;}
-
-    if(res < 10)
-    {sprintf(form, "0%d", res);}
-    else
-    {sprintf(form, "%d", res);}
-
-    return form;
-}
-
 int set_time(void)
 {  
     UBYTE *BlackImage;
@@ -71,19 +58,24 @@ int set_time(void)
     Paint_NewImage(BlackImage, OLED_1in3_C_WIDTH, OLED_1in3_C_HEIGHT, 180, WHITE);	
     Paint_Clear(BLACK);
 
-    volatile int *hour= NULL;
-    volatile int *minute= NULL;
-    char *info=NULL;
-    // TODO: Make forloops one
+    volatile int *hour;
+    volatile int *minute;
+    char hour_f[12];
+    char min_f[12];
+    char *info;
     for(int setup=0; setup<2; setup++)  /*Whether we're setting sleep or wake time*/
     {
         info = (setup == 0) ? "Current time:" : "Wakeup time:";
         hour = (setup == 0) ? &sleeptime.sleephour : &sleeptime.wakehour;
         minute = (setup == 0) ? &sleeptime.sleepminutes : &sleeptime.wakeminutes;
         
+        int screen_wait = 2000;
         int iter = 0;
         int i = 0;
-        for(i; i<2000; i++){
+        snprintf(hour_f, sizeof("00"), "00");
+        snprintf(min_f, sizeof("00"), "00");
+
+        for(i; i<screen_wait; i++){
             if(DEV_Digital_Read(key1 ) == 0){
                 Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
                 iter = iter+1;
@@ -103,14 +95,15 @@ int set_time(void)
             *hour = iter/40; // Adjust selection speed
             if(*hour > 23 || *hour < -23){*hour = 0; iter = 0;}
             else if(*hour < 0){*hour = 24+*hour;}
+            snprintf(hour_f, sizeof(*hour), "%02d", *hour);
 
             // Blink numbers to be selected
             if(i/100 == 0 || i/100 == 1 || i/100 == 4 || i/100 == 5 || i/100 == 8 || i/100 == 9 || i/100 == 12 || i/100 == 13 || i/100 == 16 || i/100 == 17)
             {
-                Paint_DrawString_EN(15, 20, formatted(*hour), &Font24, WHITE, BLACK);
+                Paint_DrawString_EN(15, 20, hour_f, &Font24, WHITE, BLACK);
             }
             Paint_DrawChar(45, 20, del_char, &Font24, BLACK, WHITE);
-            Paint_DrawString_EN(60, 20, formatted(0), &Font24, WHITE, BLACK);
+            Paint_DrawString_EN(60, 20, min_f, &Font24, WHITE, BLACK);
             Paint_DrawString_EN(15, 5, info, &Font12, WHITE, BLACK);
 
             OLED_1in3_C_Display(BlackImage);
@@ -118,7 +111,7 @@ int set_time(void)
         }
         iter = 0;
         i = 0;
-        for(i; i<2000; i++){
+        for(i; i<screen_wait; i++){
             if(DEV_Digital_Read(key1 ) == 0){
                 Paint_DrawChar(115, 5, '+', &Font12, BLACK, WHITE);
                 iter = iter+1;
@@ -138,14 +131,15 @@ int set_time(void)
             *minute = iter/40; // Adjust selection speed
             if(*minute > 59 || *minute < -59){*minute = 0; iter = 0;}
             else if(*minute < 0){*minute = 60+*minute;}
+            snprintf(min_f, sizeof(*minute), "%02d",*minute);
 
             // Blink numbers to be selected
             if(i/100 == 0 || i/100 == 1 || i/100 == 4 || i/100 == 5 || i/100 == 8 || i/100 == 9 || i/100 == 12 || i/100 == 13 || i/100 == 16 || i/100 == 17)
             {
-                Paint_DrawString_EN(60, 20, formatted(*minute), &Font24, WHITE, BLACK);
+                Paint_DrawString_EN(60, 20, min_f, &Font24, WHITE, BLACK);
             }
             Paint_DrawChar(45, 20, del_char, &Font24, BLACK, WHITE);
-            Paint_DrawString_EN(15, 20, formatted(*hour), &Font24, WHITE, BLACK);
+            Paint_DrawString_EN(15, 20, hour_f, &Font24, WHITE, BLACK);
             Paint_DrawString_EN(15, 5, info, &Font12, WHITE, BLACK);
 
             OLED_1in3_C_Display(BlackImage);
@@ -153,9 +147,9 @@ int set_time(void)
         }
 
         // Show result for a bit
-        Paint_DrawString_EN(60, 20, formatted(*minute), &Font24, WHITE, BLACK);
+        Paint_DrawString_EN(60, 20, min_f, &Font24, WHITE, BLACK);
         Paint_DrawChar(45, 20, del_char, &Font24, BLACK, WHITE);
-        Paint_DrawString_EN(15, 20, formatted(*hour), &Font24, WHITE, BLACK);
+        Paint_DrawString_EN(15, 20, hour_f, &Font24, WHITE, BLACK);
         OLED_1in3_C_Display(BlackImage);
         Paint_Clear(BLACK);
         sleep_ms(1000);
@@ -167,16 +161,17 @@ int set_time(void)
     if(sleeptime.durminutes < 0){sleeptime.durminutes = 0;}
     sleeptime.total = 60*sleeptime.durhour + sleeptime.durminutes;
 
+    snprintf(hour_f, sizeof(sleeptime.durhour), "%02d", sleeptime.durhour);
+    snprintf(min_f, sizeof(sleeptime.durminutes), "%02d", sleeptime.durminutes);
+
     // Show time to sleep
-    Paint_DrawString_EN(60, 20, formatted(sleeptime.durminutes), &Font24, WHITE, BLACK);
+    Paint_DrawString_EN(60, 20, min_f, &Font24, WHITE, BLACK);
     Paint_DrawChar(45, 20, del_char, &Font24, BLACK, WHITE);
-    Paint_DrawString_EN(15, 20, formatted(sleeptime.durhour), &Font24, WHITE, BLACK);
+    Paint_DrawString_EN(15, 20, hour_f, &Font24, WHITE, BLACK);
     Paint_DrawString_EN(15, 5, "Time to sleep:", &Font12, WHITE, BLACK);
     OLED_1in3_C_Display(BlackImage);
     Paint_Clear(BLACK);
     sleep_ms(2000);
-
-    //TODO: Cleanup function to free all mallocs
 
     // Back to black
     OLED_1in3_C_Clear();
